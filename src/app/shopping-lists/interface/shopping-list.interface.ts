@@ -1,0 +1,1 @@
+export type ShoppingList = { [ingredientName: string]: string }
