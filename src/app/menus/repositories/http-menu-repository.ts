@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@angular/core";
 import { IMenuRepository, MenuRepositoryError, MenuRepositoryErrorCode } from "./menu-repository.interface";
 import { HttpClient } from "@angular/common/http";
 import { ValidationError } from "../../toolBox/validation/validation.interface";
-import { ShpLsPrsrDayMenuValidator, ShpLsPrsrMealMenuValidator, ShpLsPrsrWeekMenuAdapter, ShpLsPrsrWeekMenuValidator } from "../external-apis/shplsprsr/shplsprsr-menu";
+import { ShpLsPrsrDayMenuValidator, ShpLsPrsrMealMenuValidator, ShpLsPrsrMenuCollectionAdapter, ShpLsPrsrMenuCollectionValidator } from "../external-apis/shplsprsr/shplsprsr-menu";
 import { Result } from "../../toolBox/result/implementations/result";
 import { WeekMenu } from "../interfaces/menu.interface";
 
@@ -21,15 +21,15 @@ export class HttpMenuRepository implements IMenuRepository {
         })
 
         const rawJSON = JSON.parse(fileContent)
+        console.log(rawJSON)
         const mealMenuValidator = new ShpLsPrsrMealMenuValidator()
-        const dayMenuValidator = new ShpLsPrsrDayMenuValidator(mealMenuValidator)
-        const weekMenuValidator = new ShpLsPrsrWeekMenuValidator(dayMenuValidator)
-        const result = weekMenuValidator.validate(rawJSON)
+        const collectionValidator = new ShpLsPrsrMenuCollectionValidator(mealMenuValidator)
+        const result = collectionValidator.validate(rawJSON)
         if (result.isErr()) {
             return Result.err({ code: MenuRepositoryErrorCode.VALIDATION_ERROR, error: result.unwrapErr() })
         }
 
-        const menu = ShpLsPrsrWeekMenuAdapter(result.unwrap())
+        const menu = ShpLsPrsrMenuCollectionAdapter(result.unwrap())
         return Result.ok(menu)
     }
 } 
