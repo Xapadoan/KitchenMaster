@@ -16,7 +16,7 @@ export class HttpMenuRepository implements IMenuRepository {
     async findWeeks(id: string) {
         const fileContent: string = await new Promise((resolve) => {
             this.httpClient
-                .get(`http://localhost:8040/menu/week/${id}`, {responseType: "text"})
+                .get(`http://localhost:8040/menu/${id}`, {responseType: "text"})
                 .subscribe((text) => resolve(text))
         })
 
