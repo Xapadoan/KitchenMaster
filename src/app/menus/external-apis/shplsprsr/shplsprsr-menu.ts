@@ -43,11 +43,11 @@ type ShpLsPrsrDayMenu = {
     Lunch: ShpLsPrsrMealMenu
     Dinner: ShpLsPrsrMealMenu
 }
-function ShpLsPrsrDayMenuAdapter(menu: ShpLsPrsrDayMenu): DayMenu {
+function ShpLsPrsrDayMenuAdapter(meals: ShpLsPrsrMealMenu[]): DayMenu {
     return {
-        breakfast: ShpLsPrsrMealMenuAdapter(menu.Breakfast),
-        lunch: ShpLsPrsrMealMenuAdapter(menu.Lunch),
-        dinner: ShpLsPrsrMealMenuAdapter(menu.Dinner)
+        breakfast: ShpLsPrsrMealMenuAdapter(meals[0]),
+        lunch: ShpLsPrsrMealMenuAdapter(meals[1]),
+        dinner: ShpLsPrsrMealMenuAdapter(meals[2])
     }
 }
 
@@ -92,35 +92,40 @@ export type ShpLsPrsrWeekMenu = {
     Sunday: ShpLsPrsrDayMenu
 }
 
-export function ShpLsPrsrWeekMenuAdapter(menu: ShpLsPrsrWeekMenu): WeekMenu {
+export type ShpLsPrsrMenuCollection = {
+    Id: string
+    Menus: ShpLsPrsrMealMenu[]
+}
+
+export function ShpLsPrsrMenuCollectionAdapter(collection: ShpLsPrsrMenuCollection): WeekMenu {
     return {
-        mon: ShpLsPrsrDayMenuAdapter(menu.Monday),
-        tue: ShpLsPrsrDayMenuAdapter(menu.Tuesday),
-        wed: ShpLsPrsrDayMenuAdapter(menu.Wednesday),
-        thu: ShpLsPrsrDayMenuAdapter(menu.Thursday),
-        fri: ShpLsPrsrDayMenuAdapter(menu.Friday),
-        sat: ShpLsPrsrDayMenuAdapter(menu.Saturday),
-        sun: ShpLsPrsrDayMenuAdapter(menu.Sunday),
+        mon: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(0, 3)),
+        tue: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(3, 6)),
+        wed: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(6, 9)),
+        thu: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(9, 12)),
+        fri: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(12, 15)),
+        sat: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(15, 18)),
+        sun: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(18, 21)),
     }
 }
 
-export class ShpLsPrsrWeekMenuValidator implements IValidate<ShpLsPrsrWeekMenu> {
+export class ShpLsPrsrMenuCollectionValidator implements IValidate<ShpLsPrsrMenuCollection> {
     constructor(
-        private readonly validator: IValidate<ShpLsPrsrDayMenu>
+        private readonly validator: IValidate<ShpLsPrsrMealMenu>
     ) {}
 
-    validate(item: unknown): IResult<ShpLsPrsrWeekMenu, ValidationError> {
+    validate(item: unknown): IResult<ShpLsPrsrMenuCollection, ValidationError> {
         if (!item || typeof item != "object") {
             return Result.err({ code: ValidationErrorCode.NOT_AN_OBJECT, path: "." })
         }
 
-        const asWeekMenu = item as ShpLsPrsrWeekMenu
+        const asCollection = item as ShpLsPrsrMenuCollection
 
         let validationError: ValidationError | null = null
-        Object.entries(asWeekMenu).find(([key, value]) => {
-            const result = this.validator.validate(value)
+        asCollection.Menus.find((menu, index) => {
+            const result = this.validator.validate(menu)
             if (result.isErr()) {
-                validationError = { code: ValidationErrorCode.INTERNAL_VALIDATION_FAILED, path: key, error: result.unwrapErr()}
+                validationError = { code: ValidationErrorCode.INTERNAL_VALIDATION_FAILED, path: `Menus[${index}]`, error: result.unwrapErr()}
                 return true
             }
 
@@ -131,6 +136,6 @@ export class ShpLsPrsrWeekMenuValidator implements IValidate<ShpLsPrsrWeekMenu> 
             return Result.err(validationError)
         }
 
-        return Result.ok(asWeekMenu)
+        return Result.ok(asCollection)
     }
 }

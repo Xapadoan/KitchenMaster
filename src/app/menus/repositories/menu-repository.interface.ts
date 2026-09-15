@@ -14,5 +14,5 @@ export type MenuRepositoryValidationError = {
 };
 
 export enum MenuRepositoryErrorCode {
-  VALIDATION_ERROR,
+  VALIDATION_ERROR = "VALIDATION_ERROR",
 }
