@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { Result } from "../../toolBox/result/implementations/result";
 import { ValidationError } from "../../toolBox/validation/validation.interface";
 import { ShpLsPrsrRecipeAdapter, ShpLsPrsrRecipeValidator } from "../external-apis/shplsprsr/shplsprsr-recipe";
+import { ShpLsPrsrIngredientValidator } from "../external-apis/shplsprsr/shplsprsr-ingredient";
 
 @Injectable({ providedIn: "root" })
 export class HttpRecipeRepository implements IRecipeRepository {
@@ -22,8 +23,9 @@ export class HttpRecipeRepository implements IRecipeRepository {
     });
     const rawJSON = JSON.parse(fileContent);
 
-    const validator = new ShpLsPrsrRecipeValidator();
-    const result = validator.validate(rawJSON);
+    const ingredientValidator = new ShpLsPrsrIngredientValidator();
+    const recipeValidator = new ShpLsPrsrRecipeValidator(ingredientValidator);
+    const result = recipeValidator.validate(rawJSON);
     if (result.isErr()) {
       return Result.err({
         code: HttpRecipeRepositoryErrorCode.VALIDATION_ERROR,

@@ -72,7 +72,16 @@ export class MenuDetails implements OnInit {
     const results = await Promise.all(
       this.data.recipeIds.map((id) => this.repository.get(id))
     );
-    this.recipes.set(results.filter((r) => r.isOk()).map((r) => r.unwrap()));
+
+    const okRecipes: Recipe[] = []
+    results.forEach((recipeResult) => {
+      if (recipeResult.isOk()) {
+        okRecipes.push(recipeResult.unwrap())
+      } else {
+        console.error(recipeResult.unwrapErr())
+      }
+    })
+    this.recipes.set(okRecipes);
   }
 
   ngOnInit(): void {

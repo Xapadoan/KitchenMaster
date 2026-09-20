@@ -21,7 +21,6 @@ export class HttpMenuRepository implements IMenuRepository {
         })
 
         const rawJSON = JSON.parse(fileContent)
-        console.log(rawJSON)
         const mealMenuValidator = new ShpLsPrsrMealMenuValidator()
         const collectionValidator = new ShpLsPrsrMenuCollectionValidator(mealMenuValidator)
         const result = collectionValidator.validate(rawJSON)
