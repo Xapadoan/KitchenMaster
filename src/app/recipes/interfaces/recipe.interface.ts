@@ -7,7 +7,7 @@ export enum Unit {
   Unknown
 }
 
-export function unitAsString(u: Unit): string {
+function unitAsString(u: Unit): string {
   switch (u) {
     case Unit.Gram:
       return "g"
@@ -22,6 +22,10 @@ export function unitAsString(u: Unit): string {
   }
 
   return "?"
+}
+
+export function formatIngredient(i: Ingredient): string {
+  return `${i.amount.toFixed(1)}${unitAsString(i.unit)} ${i.name}`
 }
 
 export type Ingredient = {

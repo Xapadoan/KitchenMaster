@@ -49,7 +49,7 @@ export class ShoppingListDialog implements OnInit {
                     const err = result.unwrapErr()
                     this.error.set(`[${err.code}]: ${err.error}`)
                 } else {
-                    const asStrings = Object.entries(result.unwrap()).map(([key, value]) => `${key} ${value}`)
+                    const asStrings = Object.entries(result.unwrap()).map(([_, value]) => value)
                     this.shoppingList.set(asStrings)
                 }
             })

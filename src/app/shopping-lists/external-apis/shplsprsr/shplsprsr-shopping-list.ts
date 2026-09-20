@@ -3,15 +3,11 @@ import { IValidate, ValidationError, ValidationErrorCode } from "../../../toolBo
 import { IResult } from "../../../toolBox/result/interfaces/result.interface"
 import { Result } from "../../../toolBox/result/implementations/result"
 import { ShoppingList } from "../../interface/shopping-list.interface"
-
-export type ShpLsPrsrIngredientQuantity = {
-  Name: string,
-  Amount: number,
-  Unit: string,
-}
+import { ShpLsPrsrIngredient, ShpLsPrsrIngredientAdapter } from "../../../recipes/external-apis/shplsprsr/shplsprsr-ingredient"
+import { formatIngredient } from "../../../recipes/interfaces/recipe.interface"
 
 export type ShpLsPrsrShoppingList = {
-  [ingredientName: string]: ShpLsPrsrIngredientQuantity[]
+  [ingredientName: string]: ShpLsPrsrIngredient[]
 }
 
 const ShpLsPrsrIngredientQuantitySchema = z.object({
@@ -38,7 +34,8 @@ export class ShpLsPrsrShoppingListValidator implements IValidate<ShpLsPrsrShoppi
 export function ShpLsPrsrShoppingListAdapter(rawList: ShpLsPrsrShoppingList): ShoppingList {
   return Object.entries(rawList).reduce((acc, [key, value]) => {
     const quantities = value.reduce((vAcc, quantity) => {
-      return {...vAcc, [key]: `${quantity.Amount}${quantity.Unit}` }
+      const ingredient = ShpLsPrsrIngredientAdapter(quantity)
+      return {...vAcc, [key]: formatIngredient(ingredient) }
     }, {} as ShoppingList)
     return { ...acc, ...quantities }
   }, {} as ShoppingList)
