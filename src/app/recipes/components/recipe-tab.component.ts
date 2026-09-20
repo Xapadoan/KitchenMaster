@@ -1,5 +1,5 @@
-import { Component, input } from "@angular/core";
-import { Recipe } from "../interfaces/recipe.interface";
+import { Component, input, OnInit } from "@angular/core";
+import { Ingredient, Recipe, Unit, formatIngredient } from "../interfaces/recipe.interface";
 
 @Component({
   selector: "app-recipe-tab",
@@ -17,7 +17,7 @@ import { Recipe } from "../interfaces/recipe.interface";
       <h3>Ingredients</h3>
       <div class="ingredients-box">
         @for (ingredient of this.recipe().ingredients; track $index) {
-        <p class="ingredient">{{ ingredient }}</p>
+        <p class="ingredient">{{ this.writeIngredient(ingredient) }}</p>
         }
       </div>
       <h3>Steps</h3>
@@ -29,4 +29,8 @@ import { Recipe } from "../interfaces/recipe.interface";
 })
 export class RecipeTab {
   recipe = input.required<Recipe>();
+
+  writeIngredient(i: Ingredient) {
+    return formatIngredient(i)
+  }
 }
