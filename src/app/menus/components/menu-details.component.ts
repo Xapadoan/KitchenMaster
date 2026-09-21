@@ -1,41 +1,41 @@
 import {
-  Component,
-  Inject,
-  OnInit,
-  WritableSignal,
-  inject,
-  signal,
+	Component,
+	Inject,
+	inject,
+	type OnInit,
+	signal,
+	type WritableSignal,
 } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import {
-  MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
+	MAT_DIALOG_DATA,
+	MatDialogActions,
+	MatDialogClose,
+	MatDialogContent,
+	MatDialogRef,
+	MatDialogTitle,
 } from "@angular/material/dialog";
 import { MatTab, MatTabGroup } from "@angular/material/tabs";
-import { MealMenu } from "../interfaces/menu.interface";
-import { HttpRecipeRepository } from "../../recipes/repositories/http-recipe-repository";
-import { IRecipeRepository } from "../../recipes/repositories/recipes-repository.interface";
-import { Recipe } from "../../recipes/interfaces/recipe.interface";
 import { RecipeTab } from "../../recipes/components/recipe-tab.component";
+import type { Recipe } from "../../recipes/interfaces/recipe.interface";
+import { HttpRecipeRepository } from "../../recipes/repositories/http-recipe-repository";
+import type { IRecipeRepository } from "../../recipes/repositories/recipes-repository.interface";
+import type { MealMenu } from "../interfaces/menu.interface";
 
 @Component({
-  selector: "app-menu-details",
-  imports: [
-    MatButtonModule,
-    MatDialogActions,
-    MatDialogClose,
-    MatDialogContent,
-    MatDialogTitle,
-    MatTab,
-    MatTabGroup,
-    RecipeTab,
-  ],
-  styles: ``,
-  template: `<h2 mat-dialog-title>{{ data.title }}</h2>
+	selector: "app-menu-details",
+	imports: [
+		MatButtonModule,
+		MatDialogActions,
+		MatDialogClose,
+		MatDialogContent,
+		MatDialogTitle,
+		MatTab,
+		MatTabGroup,
+		RecipeTab,
+	],
+	styles: ``,
+	template: `<h2 mat-dialog-title>{{ data.title }}</h2>
     <mat-dialog-content>
       @if (this.recipes() && this.recipes().length > 0) {
       <mat-tab-group>
@@ -56,35 +56,35 @@ import { RecipeTab } from "../../recipes/components/recipe-tab.component";
     >`,
 })
 export class MenuDetails implements OnInit {
-  readonly dialogRef = inject(MatDialogRef<MenuDetails>);
-  readonly data = inject<MealMenu>(MAT_DIALOG_DATA);
-  recipes: WritableSignal<Recipe[]> = signal([]);
+	readonly dialogRef = inject(MatDialogRef<MenuDetails>);
+	readonly data = inject<MealMenu>(MAT_DIALOG_DATA);
+	recipes: WritableSignal<Recipe[]> = signal([]);
 
-  constructor(
-    @Inject(HttpRecipeRepository)
-    private readonly repository: IRecipeRepository
-  ) {}
+	constructor(
+		@Inject(HttpRecipeRepository)
+		private readonly repository: IRecipeRepository,
+	) {}
 
-  private async loadRecipes() {
-    if (!this.data.recipeIds || this.data.recipeIds.length < 1) {
-      return;
-    }
-    const results = await Promise.all(
-      this.data.recipeIds.map((id) => this.repository.get(id))
-    );
+	private async loadRecipes() {
+		if (!this.data.recipeIds || this.data.recipeIds.length < 1) {
+			return;
+		}
+		const results = await Promise.all(
+			this.data.recipeIds.map((id) => this.repository.get(id)),
+		);
 
-    const okRecipes: Recipe[] = []
-    results.forEach((recipeResult) => {
-      if (recipeResult.isOk()) {
-        okRecipes.push(recipeResult.unwrap())
-      } else {
-        console.error(recipeResult.unwrapErr())
-      }
-    })
-    this.recipes.set(okRecipes);
-  }
+		const okRecipes: Recipe[] = [];
+		results.forEach((recipeResult) => {
+			if (recipeResult.isOk()) {
+				okRecipes.push(recipeResult.unwrap());
+			} else {
+				console.error(recipeResult.unwrapErr());
+			}
+		});
+		this.recipes.set(okRecipes);
+	}
 
-  ngOnInit(): void {
-    this.loadRecipes();
-  }
+	ngOnInit(): void {
+		this.loadRecipes();
+	}
 }

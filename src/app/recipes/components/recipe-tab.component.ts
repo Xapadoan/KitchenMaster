@@ -1,10 +1,14 @@
-import { Component, input, OnInit } from "@angular/core";
-import { Ingredient, Recipe, Unit, formatIngredient } from "../interfaces/recipe.interface";
+import { Component, input } from "@angular/core";
+import {
+	formatIngredient,
+	type Ingredient,
+	type Recipe,
+} from "../interfaces/recipe.interface";
 
 @Component({
-  selector: "app-recipe-tab",
-  imports: [],
-  styles: `
+	selector: "app-recipe-tab",
+	imports: [],
+	styles: `
   .ingredients-box {
     display: grid;
     grid-template-columns: 50% 50%;
@@ -12,7 +16,7 @@ import { Ingredient, Recipe, Unit, formatIngredient } from "../interfaces/recipe
   .ingredient {
     margin: 5px;
   }`,
-  template: `<article>
+	template: `<article>
     <section>
       <h3>Ingredients</h3>
       <div class="ingredients-box">
@@ -28,9 +32,9 @@ import { Ingredient, Recipe, Unit, formatIngredient } from "../interfaces/recipe
   </article> `,
 })
 export class RecipeTab {
-  recipe = input.required<Recipe>();
+	recipe = input.required<Recipe>();
 
-  writeIngredient(i: Ingredient) {
-    return formatIngredient(i)
-  }
+	writeIngredient(i: Ingredient) {
+		return formatIngredient(i);
+	}
 }

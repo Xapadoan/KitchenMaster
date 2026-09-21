@@ -1,15 +1,28 @@
-import { Component, Inject, inject, Input, OnInit, signal, WritableSignal } from "@angular/core";
-import { CreateShoppingListParams } from "../interface/create-shopping-list.interface";
-import { MatDialogRef, MatDialogContent, MatDialogTitle, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import {
+	Component,
+	Inject,
+	Input,
+	inject,
+	type OnInit,
+	signal,
+	type WritableSignal,
+} from "@angular/core";
+import {
+	MAT_DIALOG_DATA,
+	MatDialogContent,
+	type MatDialogRef,
+	MatDialogTitle,
+} from "@angular/material/dialog";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { formatIngredient } from "../../recipes/interfaces/recipe.interface";
+import type { CreateShoppingListParams } from "../interface/create-shopping-list.interface";
 import { HttpShoppingListRepository } from "../repository/http-shopping-list-repository";
-import { ShoppingListRepository } from "../repository/shopping-list-repository.interface";
-import { ShoppingList } from "../interface/shopping-list.interface";
+import type { ShoppingListRepository } from "../repository/shopping-list-repository.interface";
 
 @Component({
-    selector: "app-shopping-list-dialog",
-    imports: [MatDialogContent, MatDialogTitle, MatProgressSpinner],
-    template: `
+	selector: "app-shopping-list-dialog",
+	imports: [MatDialogContent, MatDialogTitle, MatProgressSpinner],
+	template: `
     <h2 mat-dialog-title>Shopping List</h2>
     <mat-dialog-content>
         @if (this.loading()) {
@@ -25,39 +38,48 @@ import { ShoppingList } from "../interface/shopping-list.interface";
         }
     </mat-dialog-content>
     `,
-    styles: ``,
+	styles: ``,
 })
 export class ShoppingListDialog implements OnInit {
-    readonly dialogRef = inject<MatDialogRef<ShoppingListDialog>>
-    readonly data = inject<CreateShoppingListParams>(MAT_DIALOG_DATA)
-    @Input({required: true }) params!: CreateShoppingListParams
+	readonly dialogRef = inject<MatDialogRef<ShoppingListDialog>>;
+	readonly data = inject<CreateShoppingListParams>(MAT_DIALOG_DATA);
+	@Input({ required: true }) params!: CreateShoppingListParams;
 
-    constructor(
-        @Inject(HttpShoppingListRepository)
-        private readonly repo: ShoppingListRepository
-    ) {}
-    
-    loading: WritableSignal<boolean> = signal(false)
-    error: WritableSignal<string> = signal("")
-    shoppingList: WritableSignal<string[] | null> = signal(null)
+	constructor(
+		@Inject(HttpShoppingListRepository)
+		private readonly repo: ShoppingListRepository,
+	) {}
 
-    ngOnInit(): void {
-        this.loading.set(true)
-        this.repo.create(this.data)
-            .then((result) => {
-                if (result.isErr()) {
-                    const err = result.unwrapErr()
-                    this.error.set(`[${err.code}]: ${err.error}`)
-                } else {
-                    const asStrings = Object.entries(result.unwrap()).map(([_, value]) => value)
-                    this.shoppingList.set(asStrings)
-                }
-            })
-            .catch((error) => {
-                this.error.set("[Unknown]: Unknown error")
-            })
-            .finally(() => {
-                this.loading.set(false)
-            })
-    }
+	loading: WritableSignal<boolean> = signal(false);
+	error: WritableSignal<string> = signal("");
+	shoppingList: WritableSignal<string[] | null> = signal(null);
+
+	ngOnInit(): void {
+		this.loading.set(true);
+		this.repo
+			.create(this.data)
+			.then((result) => {
+				if (result.isErr()) {
+					const err = result.unwrapErr();
+					this.error.set(`[${err.code}]: ${err.error}`);
+				} else {
+					const asStrings = Object.entries(result.unwrap()).reduce(
+						(acc, [_, units]) => {
+							units.forEach((unit) => {
+								acc.push(formatIngredient(unit));
+							});
+							return acc;
+						},
+						[] as string[],
+					);
+					this.shoppingList.set(asStrings);
+				}
+			})
+			.catch(() => {
+				this.error.set("[Unknown]: Unknown error");
+			})
+			.finally(() => {
+				this.loading.set(false);
+			});
+	}
 }

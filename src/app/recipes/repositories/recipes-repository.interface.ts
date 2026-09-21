@@ -1,6 +1,6 @@
-import { Result } from "../../toolBox/result/implementations/result";
-import { Recipe } from "../interfaces/recipe.interface";
+import type { Result } from "../../toolBox/result/implementations/result";
+import type { Recipe } from "../interfaces/recipe.interface";
 
-export interface IRecipeRepository<E extends unknown = unknown> {
-  get(id: string): Promise<Result<Recipe, E>>;
+export interface IRecipeRepository<E = unknown> {
+	get(id: string): Promise<Result<Recipe, E>>;
 }
