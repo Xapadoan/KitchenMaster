@@ -1,10 +1,9 @@
 import { Component } from "@angular/core";
-import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
-import { MenusScreen } from "./menus/menus.screen";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
 	selector: "app-root",
-	imports: [MenusScreen, RouterLink, RouterLinkActive, RouterOutlet],
+	imports: [RouterOutlet],
 	template: `<main>
     <router-outlet></router-outlet>
   </main>`,
