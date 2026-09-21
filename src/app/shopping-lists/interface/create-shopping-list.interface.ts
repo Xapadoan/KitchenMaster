@@ -1,1 +1,4 @@
-export type CreateShoppingListParams = { recipeIds: string[], numberOfPeopleEating: number }[]
+export type CreateShoppingListParams = {
+	recipeIds: string[];
+	numberOfPeopleEating: number;
+}[];

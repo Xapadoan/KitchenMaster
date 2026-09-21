@@ -1,13 +1,12 @@
 import { Component, input } from "@angular/core";
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import type { WeekMenu } from "../interfaces/menu.interface";
 import { Menu } from "./menu.component";
-import { WeekMenu } from "../interfaces/menu.interface";
-import { MatProgressSpinner, MatSpinner } from "@angular/material/progress-spinner";
-import { MatProgressBar } from "@angular/material/progress-bar";
 
 @Component({
-  selector: "app-menus-table",
-  imports: [Menu, MatProgressSpinner],
-  template: `<table>
+	selector: "app-menus-table",
+	imports: [Menu, MatProgressSpinner],
+	template: `<table>
     <thead>
       <tr>
         <th>Lundi</th>
@@ -53,11 +52,11 @@ import { MatProgressBar } from "@angular/material/progress-bar";
 }
     </tbody>
   </table>`,
-  styles: `
+	styles: `
   td {
   padding: 5px
   }`,
 })
 export class MenusTable {
-  WeekMenu = input.required<WeekMenu | null>();
+	WeekMenu = input.required<WeekMenu | null>();
 }
