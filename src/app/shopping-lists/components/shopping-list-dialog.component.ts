@@ -32,7 +32,7 @@ import type { ShoppingListRepository } from "../repository/shopping-list-reposit
         } @else {
             <ul>
                 @for (item of this.shoppingList(); track item) {
-                <li>[] {{item}}</li>
+                <li> - [ ] {{item}}</li>
                 }
             </ul>
         }
