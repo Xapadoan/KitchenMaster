@@ -5,7 +5,9 @@ import {
 	ShpLsPrsrMealMenuValidator,
 	ShpLsPrsrMenuCollectionAdapter,
 	ShpLsPrsrMenuCollectionValidator,
+	WeekMenuAdapter,
 } from "../external-apis/shplsprsr/shplsprsr-menu";
+import type { DayMenu, WeekMenu } from "../interfaces/menu.interface";
 import {
 	type IMenuRepository,
 	MenuRepositoryErrorCode,
@@ -43,12 +45,30 @@ export class HttpMenuRepository implements IMenuRepository {
 	}
 
 	async createWeekMenu() {
+		const defaultDayMenu: DayMenu = {
+			breakfast: { title: "Breakfast" },
+			lunch: { title: "Lunch" },
+			dinner: { title: "Dinner" },
+		};
+		const defaultWeekMenu: WeekMenu = {
+			mon: defaultDayMenu,
+			tue: defaultDayMenu,
+			wed: defaultDayMenu,
+			thu: defaultDayMenu,
+			fri: defaultDayMenu,
+			sat: defaultDayMenu,
+			sun: defaultDayMenu,
+		};
 		const createResponse: string = await new Promise((resolve) => {
 			this.httpClient
-				.post(`http://localhost:8040/menus`, "{}", { responseType: "text" })
-				.subscribe(resolve)
-		})
+				.post(
+					`http://localhost:8040/menus`,
+					JSON.stringify({ Menus: WeekMenuAdapter(defaultWeekMenu) }),
+					{ responseType: "text" },
+				)
+				.subscribe(resolve);
+		});
 
-		return Promise.resolve(Result.ok(createResponse))
+		return Promise.resolve(Result.ok(createResponse));
 	}
 }

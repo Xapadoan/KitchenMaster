@@ -22,6 +22,12 @@ function ShpLsPrsrMealMenuAdapter(menu: ShpLsPrsrMealMenu): MealMenu {
 		recipeIds: menu.RecipeIds,
 	};
 }
+function MealMenuAdapter(menu: MealMenu): ShpLsPrsrMealMenu {
+	return {
+		Title: menu.title,
+		RecipeIds: menu.recipeIds || [],
+	};
+}
 
 export class ShpLsPrsrMealMenuValidator
 	implements IValidate<ShpLsPrsrMealMenu>
@@ -70,6 +76,13 @@ function ShpLsPrsrDayMenuAdapter(meals: ShpLsPrsrMealMenu[]): DayMenu {
 		lunch: ShpLsPrsrMealMenuAdapter(meals[1]),
 		dinner: ShpLsPrsrMealMenuAdapter(meals[2]),
 	};
+}
+function DayMenuAdapter(menu: DayMenu): ShpLsPrsrMealMenu[] {
+	return [
+		MealMenuAdapter(menu.breakfast),
+		MealMenuAdapter(menu.lunch),
+		MealMenuAdapter(menu.dinner),
+	];
 }
 
 export class ShpLsPrsrDayMenuValidator implements IValidate<ShpLsPrsrDayMenu> {
@@ -144,6 +157,17 @@ export function ShpLsPrsrMenuCollectionAdapter(
 		sat: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(15, 18)),
 		sun: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(18, 21)),
 	};
+}
+export function WeekMenuAdapter(menu: WeekMenu): ShpLsPrsrMealMenu[] {
+	return [
+		...DayMenuAdapter(menu.mon),
+		...DayMenuAdapter(menu.tue),
+		...DayMenuAdapter(menu.wed),
+		...DayMenuAdapter(menu.thu),
+		...DayMenuAdapter(menu.fri),
+		...DayMenuAdapter(menu.sat),
+		...DayMenuAdapter(menu.sun),
+	];
 }
 
 export class ShpLsPrsrMenuCollectionValidator
