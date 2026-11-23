@@ -15,7 +15,7 @@ import { HttpMenuRepository } from "./repositories/http-menu-repository";
 import type { IMenuRepository } from "./repositories/menu-repository.interface";
 
 @Component({
-	selector: "app-menus-screen",
+	selector: "app-read-menus-screen",
 	imports: [
 		MenusTable,
 		CreateShoppingListButton,
@@ -36,7 +36,7 @@ import type { IMenuRepository } from "./repositories/menu-repository.interface";
     }`,
 	styles: ``,
 })
-export class MenusScreen implements OnInit {
+export class ReadMenusScreen implements OnInit {
 	loading: WritableSignal<boolean> = signal(false);
 	error: WritableSignal<string | null> = signal(null);
 	weekMenu: WritableSignal<WeekMenu | null> = signal(null);

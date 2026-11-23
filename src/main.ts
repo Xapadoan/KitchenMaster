@@ -6,10 +6,10 @@ import {
 	withComponentInputBinding,
 } from "@angular/router";
 import { App } from "./app/app";
-import { MenusScreen } from "./app/menus/menus.screen";
+import { ReadMenusScreen } from "./app/menus/read-menus.screen";
 
 const routes: Routes = [
-	{ path: ":menuId", component: MenusScreen, canActivate: [() => true] },
+	{ path: ":menuId", component: ReadMenusScreen, canActivate: [() => true] },
 ];
 
 bootstrapApplication(App, {
