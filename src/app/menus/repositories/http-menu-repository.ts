@@ -41,4 +41,14 @@ export class HttpMenuRepository implements IMenuRepository {
 		const menu = ShpLsPrsrMenuCollectionAdapter(result.unwrap());
 		return Result.ok(menu);
 	}
+
+	async createWeekMenu() {
+		const createResponse: string = await new Promise((resolve) => {
+			this.httpClient
+				.post(`http://localhost:8040/menus`, "{}", { responseType: "text" })
+				.subscribe(resolve)
+		})
+
+		return Promise.resolve(Result.ok(createResponse))
+	}
 }

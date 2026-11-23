@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import { CreateShoppingListButton } from "../shopping-lists/components/create-shopping-list-button.component";
+import { CreateMenuWeekMenuButton } from "./components/create-week-menu-button.component";
 import { MenusTable } from "./components/menus-table.component";
 import type { WeekMenu } from "./interfaces/menu.interface";
 import { HttpMenuRepository } from "./repositories/http-menu-repository";
@@ -15,10 +16,16 @@ import type { IMenuRepository } from "./repositories/menu-repository.interface";
 
 @Component({
 	selector: "app-menus-screen",
-	imports: [MenusTable, CreateShoppingListButton, MatProgressSpinner],
+	imports: [
+		MenusTable,
+		CreateShoppingListButton,
+		MatProgressSpinner,
+		CreateMenuWeekMenuButton,
+	],
 	template: `
   <header>
     <app-create-shopping-list-button [weekMenu]="this.weekMenu()" />
+		<app-menus-create-week-menu-button />
     </header>
   @if (this.loading()) {
     <mat-spinner />
