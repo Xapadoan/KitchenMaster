@@ -9,6 +9,10 @@ export type DayMenu = {
 	dinner: MealMenu;
 };
 
+export function isKeyOfDayMenu(s: string): s is keyof DayMenu {
+	return ["breakfast", "lunch", "dinner"].includes(s);
+}
+
 export type WeekMenu = {
 	mon: DayMenu;
 	tue: DayMenu;
@@ -18,3 +22,7 @@ export type WeekMenu = {
 	sat: DayMenu;
 	sun: DayMenu;
 };
+
+export function isKeyOfWeekMenu(s: string): s is keyof WeekMenu {
+	return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].includes(s);
+}

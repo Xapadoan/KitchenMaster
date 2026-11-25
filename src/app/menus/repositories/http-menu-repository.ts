@@ -62,7 +62,7 @@ export class HttpMenuRepository implements IMenuRepository {
 		const createResponse: string = await new Promise((resolve) => {
 			this.httpClient
 				.post(
-					`http://localhost:8040/menus`,
+					`http://localhost:8040/menu`,
 					JSON.stringify({ Menus: WeekMenuAdapter(defaultWeekMenu) }),
 					{ responseType: "text" },
 				)
@@ -70,5 +70,19 @@ export class HttpMenuRepository implements IMenuRepository {
 		});
 
 		return Promise.resolve(Result.ok(createResponse));
+	}
+
+	async updateWeekMenu(id: string, params: WeekMenu) {
+		const updateResponse: string = await new Promise((resolve) => {
+			this.httpClient
+				.put(
+					`http://localhost:8040/menu/${id}`,
+					JSON.stringify({ Menus: WeekMenuAdapter(params) }),
+					{ responseType: "text" },
+				)
+				.subscribe(resolve);
+		});
+
+		return Promise.resolve(Result.ok(updateResponse));
 	}
 }
