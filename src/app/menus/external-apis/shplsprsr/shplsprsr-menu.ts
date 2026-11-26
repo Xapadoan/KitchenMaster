@@ -9,6 +9,7 @@ import type {
 	DayMenu,
 	MealMenu,
 	WeekMenu,
+	WeekMenuData,
 } from "../../interfaces/menu.interface";
 
 type ShpLsPrsrMealMenu = {
@@ -130,16 +131,6 @@ export class ShpLsPrsrDayMenuValidator implements IValidate<ShpLsPrsrDayMenu> {
 	}
 }
 
-export type ShpLsPrsrWeekMenu = {
-	Monday: ShpLsPrsrDayMenu;
-	Tuesday: ShpLsPrsrDayMenu;
-	Wednesday: ShpLsPrsrDayMenu;
-	Thursday: ShpLsPrsrDayMenu;
-	Friday: ShpLsPrsrDayMenu;
-	Saturday: ShpLsPrsrDayMenu;
-	Sunday: ShpLsPrsrDayMenu;
-};
-
 export type ShpLsPrsrMenuCollection = {
 	Id: string;
 	Menus: ShpLsPrsrMealMenu[];
@@ -149,16 +140,19 @@ export function ShpLsPrsrMenuCollectionAdapter(
 	collection: ShpLsPrsrMenuCollection,
 ): WeekMenu {
 	return {
-		mon: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(0, 3)),
-		tue: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(3, 6)),
-		wed: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(6, 9)),
-		thu: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(9, 12)),
-		fri: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(12, 15)),
-		sat: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(15, 18)),
-		sun: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(18, 21)),
+		id: collection.Id,
+		data: {
+			mon: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(0, 3)),
+			tue: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(3, 6)),
+			wed: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(6, 9)),
+			thu: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(9, 12)),
+			fri: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(12, 15)),
+			sat: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(15, 18)),
+			sun: ShpLsPrsrDayMenuAdapter(collection.Menus.slice(18, 21)),
+		},
 	};
 }
-export function WeekMenuAdapter(menu: WeekMenu): ShpLsPrsrMealMenu[] {
+export function WeekMenuAdapter(menu: WeekMenuData): ShpLsPrsrMealMenu[] {
 	return [
 		...DayMenuAdapter(menu.mon),
 		...DayMenuAdapter(menu.tue),

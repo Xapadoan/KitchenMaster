@@ -1,13 +1,13 @@
 import type { Result } from "../../toolBox/result/implementations/result";
 import type { ValidationError } from "../../toolBox/validation/validation.interface";
-import type { WeekMenu } from "../interfaces/menu.interface";
+import type { WeekMenu, WeekMenuData } from "../interfaces/menu.interface";
 
 export interface IMenuRepository {
 	findWeeks(id: string): Promise<Result<WeekMenu, MenuRepositoryError>>;
 	createWeekMenu(): Promise<Result<WeekMenu, MenuRepositoryError>>;
 	updateWeekMenu(
 		id: string,
-		params: WeekMenu,
+		params: WeekMenuData,
 	): Promise<Result<WeekMenu, MenuRepositoryError>>;
 }
 

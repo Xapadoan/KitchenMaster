@@ -7,7 +7,7 @@ import {
 	ShpLsPrsrMenuCollectionValidator,
 	WeekMenuAdapter,
 } from "../external-apis/shplsprsr/shplsprsr-menu";
-import type { DayMenu, WeekMenu } from "../interfaces/menu.interface";
+import type { DayMenu, WeekMenuData } from "../interfaces/menu.interface";
 import {
 	type IMenuRepository,
 	MenuRepositoryErrorCode,
@@ -36,7 +36,7 @@ export class HttpMenuRepository implements IMenuRepository {
 			lunch: { title: "Lunch" },
 			dinner: { title: "Dinner" },
 		};
-		const defaultWeekMenu: WeekMenu = {
+		const defaultWeekMenu: WeekMenuData = {
 			mon: defaultDayMenu,
 			tue: defaultDayMenu,
 			wed: defaultDayMenu,
@@ -58,7 +58,7 @@ export class HttpMenuRepository implements IMenuRepository {
 		return this.adaptResponse(createResponse);
 	}
 
-	async updateWeekMenu(id: string, params: WeekMenu) {
+	async updateWeekMenu(id: string, params: WeekMenuData) {
 		const updateResponse: string = await new Promise((resolve) => {
 			this.httpClient
 				.put(

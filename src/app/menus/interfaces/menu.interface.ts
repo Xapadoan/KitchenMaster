@@ -13,7 +13,7 @@ export function isKeyOfDayMenu(s: string): s is keyof DayMenu {
 	return ["breakfast", "lunch", "dinner"].includes(s);
 }
 
-export type WeekMenu = {
+export type WeekMenuData = {
 	mon: DayMenu;
 	tue: DayMenu;
 	wed: DayMenu;
@@ -23,6 +23,11 @@ export type WeekMenu = {
 	sun: DayMenu;
 };
 
-export function isKeyOfWeekMenu(s: string): s is keyof WeekMenu {
+export type WeekMenu = {
+	id: string;
+	data: WeekMenuData;
+};
+
+export function isKeyOfWeekMenuData(s: string): s is keyof WeekMenuData {
 	return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].includes(s);
 }

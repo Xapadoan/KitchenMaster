@@ -1,6 +1,6 @@
 import { Component, input } from "@angular/core";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
-import type { WeekMenu } from "../interfaces/menu.interface";
+import type { WeekMenuData } from "../interfaces/menu.interface";
 import { Menu } from "./menu.component";
 
 @Component({
@@ -58,5 +58,5 @@ import { Menu } from "./menu.component";
   }`,
 })
 export class MenusTable {
-	WeekMenu = input.required<WeekMenu | null>();
+	WeekMenu = input.required<WeekMenuData | null>();
 }

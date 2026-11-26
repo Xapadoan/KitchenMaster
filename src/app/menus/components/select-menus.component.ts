@@ -14,8 +14,9 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import {
 	type DayMenu,
 	isKeyOfDayMenu,
-	isKeyOfWeekMenu,
+	isKeyOfWeekMenuData,
 	type WeekMenu,
+	type WeekMenuData,
 } from "../interfaces/menu.interface";
 import { HttpMenuRepository } from "../repositories/http-menu-repository";
 import type { IMenuRepository } from "../repositories/menu-repository.interface";
@@ -26,7 +27,7 @@ type EditMenuModel = {
 	title: string;
 	recipeIds: string[];
 	recipeId: string;
-	selectedMeals: Record<keyof WeekMenu, DayTimeMealSelection>;
+	selectedMeals: Record<keyof WeekMenuData, DayTimeMealSelection>;
 };
 
 @Component({
@@ -59,97 +60,97 @@ type EditMenuModel = {
 			<th>Dimanche</th>
 		</tr></thead>
 		<tbody>
-		@if (!this.tmpMenu()) {
+		@if (!this.tmpMenuData()) {
 			<mat-spinner />
 		} @else {
 			<tr>
 				<td>
 					<input type="checkbox" id="mealMonBreakfast" [formField]="editMenuForm.selectedMeals.mon.breakfast">
-					<p>{{tmpMenu()!.mon.breakfast.title}}</p>
+					<p>{{tmpMenuData()!.mon.breakfast.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealTueBreakfast" [formField]="editMenuForm.selectedMeals.tue.breakfast">
-					<p>{{tmpMenu()!.tue.breakfast.title}}</p>
+					<p>{{tmpMenuData()!.tue.breakfast.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealWedBreakfast" [formField]="editMenuForm.selectedMeals.wed.breakfast">
-					<p>{{tmpMenu()!.wed.breakfast.title}}</p>
+					<p>{{tmpMenuData()!.wed.breakfast.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealThuBreakfast" [formField]="editMenuForm.selectedMeals.thu.breakfast">
-					<p>{{tmpMenu()!.thu.breakfast.title}}</p>
+					<p>{{tmpMenuData()!.thu.breakfast.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealFriBreakfast" [formField]="editMenuForm.selectedMeals.fri.breakfast">
-					<p>{{tmpMenu()!.fri.breakfast.title}}</p>
+					<p>{{tmpMenuData()!.fri.breakfast.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealSatBreakfast" [formField]="editMenuForm.selectedMeals.sat.breakfast">
-					<p>{{tmpMenu()!.sat.breakfast.title}}</p>
+					<p>{{tmpMenuData()!.sat.breakfast.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealSunBreakfast" [formField]="editMenuForm.selectedMeals.sun.breakfast">
-					<p>{{tmpMenu()!.sun.breakfast.title}}</p>
+					<p>{{tmpMenuData()!.sun.breakfast.title}}</p>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<input type="checkbox" id="mealMonLunch" [formField]="editMenuForm.selectedMeals.mon.lunch">
-					<p>{{tmpMenu()!.mon.lunch.title}}</p>
+					<p>{{tmpMenuData()!.mon.lunch.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealTueLunch" [formField]="editMenuForm.selectedMeals.tue.lunch">
-					<p>{{tmpMenu()!.tue.lunch.title}}</p>
+					<p>{{tmpMenuData()!.tue.lunch.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealWedLunch" [formField]="editMenuForm.selectedMeals.wed.lunch">
-					<p>{{tmpMenu()!.wed.lunch.title}}</p>
+					<p>{{tmpMenuData()!.wed.lunch.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealThuLunch" [formField]="editMenuForm.selectedMeals.thu.lunch">
-					<p>{{tmpMenu()!.thu.lunch.title}}</p>
+					<p>{{tmpMenuData()!.thu.lunch.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealFriLunch" [formField]="editMenuForm.selectedMeals.fri.lunch">
-					<p>{{tmpMenu()!.fri.lunch.title}}</p>
+					<p>{{tmpMenuData()!.fri.lunch.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealSatLunch" [formField]="editMenuForm.selectedMeals.sat.lunch">
-					<p>{{tmpMenu()!.sat.lunch.title}}</p>
+					<p>{{tmpMenuData()!.sat.lunch.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealSunLunch" [formField]="editMenuForm.selectedMeals.sun.lunch">
-					<p>{{tmpMenu()!.sun.lunch.title}}</p>
+					<p>{{tmpMenuData()!.sun.lunch.title}}</p>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<input type="checkbox" id="mealMonDinner" [formField]="editMenuForm.selectedMeals.mon.dinner">
-					<p>{{tmpMenu()!.mon.dinner.title}}</p>
+					<p>{{tmpMenuData()!.mon.dinner.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealTueDinner" [formField]="editMenuForm.selectedMeals.tue.dinner">
-					<p>{{tmpMenu()!.tue.dinner.title}}</p>
+					<p>{{tmpMenuData()!.tue.dinner.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealWedDinner" [formField]="editMenuForm.selectedMeals.wed.dinner">
-					<p>{{tmpMenu()!.wed.dinner.title}}</p>
+					<p>{{tmpMenuData()!.wed.dinner.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealThuDinner" [formField]="editMenuForm.selectedMeals.thu.dinner">
-					<p>{{tmpMenu()!.thu.dinner.title}}</p>
+					<p>{{tmpMenuData()!.thu.dinner.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealFriDinner" [formField]="editMenuForm.selectedMeals.fri.dinner">
-					<p>{{tmpMenu()!.fri.dinner.title}}</p>
+					<p>{{tmpMenuData()!.fri.dinner.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealSatDinner" [formField]="editMenuForm.selectedMeals.sat.dinner">
-					<p>{{tmpMenu()!.sat.dinner.title}}</p>
+					<p>{{tmpMenuData()!.sat.dinner.title}}</p>
 				</td>
 				<td>
 					<input type="checkbox" id="mealSunDinner" [formField]="editMenuForm.selectedMeals.sun.dinner">
-					<p>{{tmpMenu()!.sun.dinner.title}}</p>
+					<p>{{tmpMenuData()!.sun.dinner.title}}</p>
 				</td>
 			</tr>
 		}
@@ -160,7 +161,7 @@ type EditMenuModel = {
 })
 export class SelectMenus implements OnChanges {
 	WeekMenu = input.required<WeekMenu | null>();
-	tmpMenu: WritableSignal<WeekMenu | null> = signal(null);
+	tmpMenuData: WritableSignal<WeekMenuData | null> = signal(null);
 	@Input({ required: true }) menuId!: string;
 
 	constructor(
@@ -169,7 +170,7 @@ export class SelectMenus implements OnChanges {
 	) {}
 
 	ngOnChanges(): void {
-		this.tmpMenu.set(this.WeekMenu());
+		this.tmpMenuData.set(this.WeekMenu()?.data || null);
 	}
 
 	private readonly editMenuFormInitState: EditMenuModel = {
@@ -225,13 +226,13 @@ export class SelectMenus implements OnChanges {
 
 	onEditRecipes() {
 		console.log(this.editMenuModel());
-		const menu = this.tmpMenu();
+		const menu = this.tmpMenuData();
 		if (!menu) {
 			return;
 		}
 		const selectedMeals = this.editMenuModel().selectedMeals;
 		for (const [dayOfWeek, menuOfTheDay] of Object.entries(selectedMeals)) {
-			if (!isKeyOfWeekMenu(dayOfWeek)) continue;
+			if (!isKeyOfWeekMenuData(dayOfWeek)) continue;
 			for (const [timeOfDay, value] of Object.entries(menuOfTheDay)) {
 				if (!isKeyOfDayMenu(timeOfDay)) continue;
 				if (value === true) {
@@ -242,7 +243,7 @@ export class SelectMenus implements OnChanges {
 			}
 		}
 
-		this.tmpMenu.set(menu);
+		this.tmpMenuData.set(menu);
 		this.resetForm();
 	}
 
@@ -276,7 +277,7 @@ export class SelectMenus implements OnChanges {
 	}
 
 	onSaveEdits() {
-		const data = this.tmpMenu();
+		const data = this.tmpMenuData();
 		console.log("Saving edits: ", data);
 		if (!data) {
 			return;

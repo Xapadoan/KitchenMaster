@@ -2,7 +2,7 @@ import { Component, Input, inject } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
-import type { WeekMenu } from "../../menus/interfaces/menu.interface";
+import type { WeekMenuData } from "../../menus/interfaces/menu.interface";
 import type { CreateShoppingListParams } from "../interface/create-shopping-list.interface";
 import { ShoppingListDialog } from "./shopping-list-dialog.component";
 
@@ -17,7 +17,7 @@ import { ShoppingListDialog } from "./shopping-list-dialog.component";
 	styles: ``,
 })
 export class CreateShoppingListButton {
-	@Input({ required: true }) weekMenu!: WeekMenu | null;
+	@Input({ required: true }) weekMenu!: WeekMenuData | null;
 
 	readonly dialog = inject(MatDialog);
 

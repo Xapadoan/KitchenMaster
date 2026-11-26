@@ -24,7 +24,7 @@ import type { IMenuRepository } from "./repositories/menu-repository.interface";
 	],
 	template: `
   <header>
-    <app-create-shopping-list-button [weekMenu]="this.weekMenu()" />
+    <app-create-shopping-list-button [weekMenu]="this.weekMenu()?.data || null" />
 		<app-menus-create-week-menu-button />
     </header>
   @if (this.loading()) {
@@ -32,7 +32,7 @@ import type { IMenuRepository } from "./repositories/menu-repository.interface";
     } @else if (this.error()) {
     <p>Error<p>
     } @else {
-    <app-menus-table [WeekMenu]="this.weekMenu()" />
+    <app-menus-table [WeekMenu]="this.weekMenu()?.data || null" />
     }`,
 	styles: ``,
 })

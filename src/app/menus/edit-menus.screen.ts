@@ -7,17 +7,15 @@ import {
 	type WritableSignal,
 } from "@angular/core";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
-import { Menu } from "./components/menu.component";
-import { MenusTable } from "./components/menus-table.component";
 import { SelectMenus } from "./components/select-menus.component";
-import type { MealMenu, WeekMenu } from "./interfaces/menu.interface";
+import type { WeekMenu } from "./interfaces/menu.interface";
 import { HttpMenuRepository } from "./repositories/http-menu-repository";
 import type { IMenuRepository } from "./repositories/menu-repository.interface";
 
 @Component({
 	selector: "app-menus-edit-menus-screen",
 	standalone: true,
-	imports: [MatProgressSpinner, SelectMenus, Menu],
+	imports: [MatProgressSpinner, SelectMenus],
 	template: `
 	@if (this.loading()) {
     <mat-spinner />
