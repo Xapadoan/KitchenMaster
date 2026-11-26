@@ -11,6 +11,7 @@ import {
 import { FormField, form } from "@angular/forms/signals";
 import { MatIconModule } from "@angular/material/icon";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { Router } from "@angular/router";
 import {
 	type DayMenu,
 	isKeyOfDayMenu,
@@ -167,6 +168,9 @@ export class SelectMenus implements OnChanges {
 	constructor(
 		@Inject(HttpMenuRepository)
 		private readonly repo: IMenuRepository,
+
+		@Inject(Router)
+		private readonly router: Router,
 	) {}
 
 	ngOnChanges(): void {
@@ -278,10 +282,11 @@ export class SelectMenus implements OnChanges {
 
 	onSaveEdits() {
 		const data = this.tmpMenuData();
-		console.log("Saving edits: ", data);
 		if (!data) {
 			return;
 		}
-		this.repo.updateWeekMenu(this.menuId, data);
+		this.repo
+			.updateWeekMenu(this.menuId, data)
+			.then(() => this.router.navigate([this.menuId]));
 	}
 }

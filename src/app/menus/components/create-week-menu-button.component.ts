@@ -1,6 +1,7 @@
 import { Component, Inject, signal, type WritableSignal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
+import { Router } from "@angular/router";
 import { HttpMenuRepository } from "../repositories/http-menu-repository";
 import type { IMenuRepository } from "../repositories/menu-repository.interface";
 
@@ -15,22 +16,26 @@ import type { IMenuRepository } from "../repositories/menu-repository.interface"
 	styles: ``,
 })
 export class CreateMenuWeekMenuButton {
-	loading: WritableSignal<boolean> = signal(false)
-	error: WritableSignal<string> = signal("")
+	loading: WritableSignal<boolean> = signal(false);
+	error: WritableSignal<string> = signal("");
 
 	constructor(
 		@Inject(HttpMenuRepository)
 		private readonly repo: IMenuRepository,
+
+		@Inject(Router)
+		private readonly router: Router,
 	) {}
 
 	onClick() {
-		this.loading.set(true)
+		this.loading.set(true);
 		this.repo.createWeekMenu().then((res) => {
-			this.loading.set(false)
+			this.loading.set(false);
 			if (res.isOk()) {
+				this.router.navigate([res.unwrap().id, "edit"]);
 				return;
 			}
-			console.error("Failed to create menu:\n", res.unwrapErr())
-		})
+			console.error("Failed to create menu:\n", res.unwrapErr());
+		});
 	}
 }
