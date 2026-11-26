@@ -4,11 +4,11 @@ import type { WeekMenu } from "../interfaces/menu.interface";
 
 export interface IMenuRepository {
 	findWeeks(id: string): Promise<Result<WeekMenu, MenuRepositoryError>>;
-	createWeekMenu(): Promise<Result<string, MenuRepositoryError>>;
+	createWeekMenu(): Promise<Result<WeekMenu, MenuRepositoryError>>;
 	updateWeekMenu(
 		id: string,
 		params: WeekMenu,
-	): Promise<Result<string, MenuRepositoryError>>;
+	): Promise<Result<WeekMenu, MenuRepositoryError>>;
 }
 
 export type MenuRepositoryError = MenuRepositoryValidationError;

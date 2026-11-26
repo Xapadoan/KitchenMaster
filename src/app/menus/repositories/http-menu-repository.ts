@@ -27,21 +27,7 @@ export class HttpMenuRepository implements IMenuRepository {
 				.subscribe((text) => resolve(text));
 		});
 
-		const rawJSON = JSON.parse(fileContent);
-		const mealMenuValidator = new ShpLsPrsrMealMenuValidator();
-		const collectionValidator = new ShpLsPrsrMenuCollectionValidator(
-			mealMenuValidator,
-		);
-		const result = collectionValidator.validate(rawJSON);
-		if (result.isErr()) {
-			return Result.err({
-				code: MenuRepositoryErrorCode.VALIDATION_ERROR,
-				error: result.unwrapErr(),
-			});
-		}
-
-		const menu = ShpLsPrsrMenuCollectionAdapter(result.unwrap());
-		return Result.ok(menu);
+		return this.adaptResponse(fileContent);
 	}
 
 	async createWeekMenu() {
@@ -69,7 +55,7 @@ export class HttpMenuRepository implements IMenuRepository {
 				.subscribe(resolve);
 		});
 
-		return Promise.resolve(Result.ok(createResponse));
+		return this.adaptResponse(createResponse);
 	}
 
 	async updateWeekMenu(id: string, params: WeekMenu) {
@@ -83,6 +69,24 @@ export class HttpMenuRepository implements IMenuRepository {
 				.subscribe(resolve);
 		});
 
-		return Promise.resolve(Result.ok(updateResponse));
+		return this.adaptResponse(updateResponse);
+	}
+
+	private adaptResponse(str: string) {
+		const rawJSON = JSON.parse(str);
+		const mealMenuValidator = new ShpLsPrsrMealMenuValidator();
+		const collectionValidator = new ShpLsPrsrMenuCollectionValidator(
+			mealMenuValidator,
+		);
+		const result = collectionValidator.validate(rawJSON);
+		if (result.isErr()) {
+			return Result.err({
+				code: MenuRepositoryErrorCode.VALIDATION_ERROR,
+				error: result.unwrapErr(),
+			});
+		}
+
+		const menu = ShpLsPrsrMenuCollectionAdapter(result.unwrap());
+		return Result.ok(menu);
 	}
 }
