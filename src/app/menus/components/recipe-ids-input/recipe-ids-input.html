@@ -1,0 +1,21 @@
+<div id="externalContainer">
+  <mat-chip-grid>
+    @for (item of this.value(); track $index) {
+      <mat-chip-row (removed)="this.removeRecipeId(item)">
+        {{ item }}
+        <button type="button" matChipRemove [attr.aria-label]="'remove ' + item">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+    }
+  </mat-chip-grid>
+  <div id="textInput">
+    <mat-form-field>
+      <mat-label>Ajouter une recette</mat-label>
+      <button mat-icon-button matSuffix type="button" (click)="this.addRecipeId()">
+        <mat-icon fontIcon="add" />
+      </button>
+      <input matInput="text" [formField]="recipeIdToAdd" />
+    </mat-form-field>
+  </div>
+</div>

@@ -21,35 +21,31 @@ import {
 } from "../interfaces/menu.interface";
 import { HttpMenuRepository } from "../repositories/http-menu-repository";
 import type { IMenuRepository } from "../repositories/menu-repository.interface";
+import { RecipeIdsInput } from "./recipe-ids-input/recipe-ids-input";
 
 type DayTimeMealSelection = Record<keyof DayMenu, boolean>;
 
 type EditMenuModel = {
 	title: string;
 	recipeIds: string[];
-	recipeId: string;
 	selectedMeals: Record<keyof WeekMenuData, DayTimeMealSelection>;
 };
 
 @Component({
 	selector: "app-menus-select-menus",
-	imports: [CommonModule, FormField, MatProgressSpinner, MatIconModule],
+	imports: [
+		CommonModule,
+		FormField,
+		MatProgressSpinner,
+		MatIconModule,
+		RecipeIdsInput,
+	],
 	template: `
 	<div>
-	<header>
 		<input type="text" [formField]="editMenuForm.title" />
-		<div>
-			<p *ngFor="let item of this.editMenuModel().recipeIds">
-				{{item}}<button (click)="this.removeRecipeId(item)">x</button>
-			</p>
-			<input type="text" [formField]="editMenuForm.recipeId" />
-			<button (click)="this.addRecipeId()">
-				<mat-icon fontIcon="add" />
-			</button>
-		</div>
+		<app-menus-recipe-ids-input [formField]="editMenuForm.recipeIds" />
 		<button (click)="this.onEditRecipes()">Edit</button>
 		<button (click)="this.onSaveEdits()">Save</button>
-	</header>
 	<table>
 		<thead><tr>
 			<th>Lundi</th>
@@ -179,7 +175,6 @@ export class SelectMenus implements OnChanges {
 
 	private readonly editMenuFormInitState: EditMenuModel = {
 		title: "",
-		recipeId: "",
 		recipeIds: [],
 		selectedMeals: {
 			mon: {
@@ -249,35 +244,6 @@ export class SelectMenus implements OnChanges {
 
 		this.tmpMenuData.set(menu);
 		this.resetForm();
-	}
-
-	addRecipeId() {
-		const recipeIdsValue = this.editMenuModel().recipeIds;
-		const recipeIdToAdd = this.editMenuModel().recipeId;
-
-		if (!recipeIdsValue.includes(recipeIdToAdd)) {
-			this.editMenuModel.update((model) => ({
-				...model,
-				recipeId: "",
-				recipeIds: [...model.recipeIds, recipeIdToAdd],
-			}));
-		}
-	}
-
-	removeRecipeId(recipeIdToRemove: string) {
-		const recipeIdsValues = this.editMenuModel().recipeIds;
-		const index = recipeIdsValues.indexOf(recipeIdToRemove);
-		if (index < 0) {
-			return;
-		}
-		const recipeIdsWithoutTheOneToRemove = [
-			...recipeIdsValues.slice(0, index),
-			...recipeIdsValues.slice(index + 1),
-		];
-		this.editMenuModel.update((model) => ({
-			...model,
-			recipeIds: recipeIdsWithoutTheOneToRemove,
-		}));
 	}
 
 	onSaveEdits() {
