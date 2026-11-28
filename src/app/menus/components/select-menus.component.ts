@@ -4,6 +4,7 @@ import {
 	Inject,
 	Input,
 	input,
+	model,
 	type OnChanges,
 	signal,
 	type WritableSignal,
@@ -215,7 +216,7 @@ export class SelectMenus implements OnChanges {
 		},
 	};
 
-	editMenuModel = signal<EditMenuModel>(this.editMenuFormInitState);
+	editMenuModel = model<EditMenuModel>(this.editMenuFormInitState);
 
 	editMenuForm = form(this.editMenuModel);
 

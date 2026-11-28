@@ -40,20 +40,12 @@ export class RecipeIdsInput implements FormValueControl<string[]> {
 			if (!recipeId || currentValues.includes(recipeId)) {
 				return currentValues;
 			}
-			currentValues.push(this.recipeIdToAddModel());
-			console.log(currentValues);
-			return currentValues;
+			return [...currentValues, recipeId];
 		});
 		this.recipeIdToAddModel.set("");
 	}
 
 	removeRecipeId(recipeIdToRemove: string) {
-		this.value.update((model) => {
-			const index = model.indexOf(recipeIdToRemove);
-			if (index < 0) {
-				return model;
-			}
-			return [...model.slice(0, index), ...model.slice(index + 1)];
-		});
+		this.value.update((model) => model.filter((r) => r !== recipeIdToRemove));
 	}
 }
