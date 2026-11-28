@@ -15,7 +15,7 @@ import type { IMenuRepository } from "../repositories/menu-repository.interface"
 	`,
 	styles: ``,
 })
-export class CreateMenuWeekMenuButton {
+export class CreateWeekMenuButton {
 	loading: WritableSignal<boolean> = signal(false);
 	error: WritableSignal<string> = signal("");
 
